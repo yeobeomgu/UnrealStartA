@@ -29,22 +29,41 @@ void UGrabber::BeginPlay()
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+	
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	FRotator MyRotation = GetComponentRotation();
-	FString RotationString = MyRotation.ToCompactString();
-	UE_LOG(LogTemp, Display, TEXT("Grabber Rotation: %s"), *RotationString);
-
 	
-	float Time = GetWorld() -> TimeSeconds;
-	UE_LOG(LogTemp, Display, TEXT("Current Time Is: %f"), Time);
 
 	FVector Start = GetComponentLocation();
 	FVector End = Start + GetForwardVector() * MaxGrabDistance;
 	DrawDebugLine(GetWorld(), Start, End, FColor::Red);
+	
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(GrabRadius);
+	//FQuat::Identity , 회전값이 없다는 걸 나타내는 수학적 표현
+	//ECC_GameTraceChannel2 , 트레이스채널 이름
+	FHitResult HitResult;
+	bool HasHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		Start, End,
+		FQuat::Identity,
+		ECC_GameTraceChannel2,
+		Sphere
+	);
 
-	float Damage = 0;
-	float& DamageRef = Damage;
+	if(HasHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		UE_LOG(LogTemp, Display, TEXT("Hit Actor: %s"), *HitActor->GetActorNameOrLabel());
+	}
+
+	else
+	{
+		UE_LOG(LogTemp, Display, TEXT("No Actor Hit"));
+
+	}
+
+	
+	
 	
 
 	
