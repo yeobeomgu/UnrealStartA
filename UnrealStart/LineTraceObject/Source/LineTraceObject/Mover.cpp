@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Math/UnrealMathUtility.h"
 #include "Mover.h"
+#include "Math/UnrealMathUtility.h"
 
 
 // Sets default values for this component's properties
@@ -32,38 +32,22 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 
 	if (ShouldMove)
 	{
-	 FVector CurrentLocation = GetOwner()->GetActorLocation();
-	 FVector TargetLocation = OriginalLocation + MoveOffset;
-	 float Speed = FVector::Distance(OriginalLocation, TargetLocation) /  MoveTime;
+		UE_LOG(LogTemp, Display, TEXT("Move"));
+		FVector CurrentLocation = GetOwner()->GetActorLocation();
+		FVector TargetLocation = OriginalLocation + MoveOffset;
+		float Speed = FVector::Distance(OriginalLocation, TargetLocation) /  MoveTime;
 	 
-	 FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, Speed);
-	 GetOwner()->SetActorLocation(NewLocation);
+		FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, Speed);
+		GetOwner()->SetActorLocation(NewLocation);
 
 	}
-
-
-	
-	//Actor* Owner = GetOwner();
-
-	//FString Name = Owner->GetActorNameOrLabel();
-	//FString Name = (*Owner).GetActorNameOrLabel();
-
 	//FVector OwnerLocation = Owner -> GetActorLocation();
 	// FVector을 문자열로 바꿔준다.
 	//FString OwnerLocationString = OwnerLocation.ToCompactString();
+}
 
-
-
-	//float MyFloat = 5;
-	//float* YourFloat = &MyFloat;
-
-	// 역참조, YourFloat 값을 얻기 위해
-	// float FloatValue = *YourFloat;
-	
-	//UE_LOG(LogTemp, Display, TEXT("YourFloat Value: %f"), *YourFloat);
-
-	//UE_LOG(LogTemp, Display, TEXT("Mover Owner: %s with location: %s"), *Name, *OwnerLocationString);
-
-	// ...
+void UMover::SetShouldMove(bool NewShouldMove)
+{
+	ShouldMove = NewShouldMove;
 }
 
