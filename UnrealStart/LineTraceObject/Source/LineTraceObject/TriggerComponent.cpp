@@ -29,6 +29,7 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 		UPrimitiveComponent* Component = Cast<UPrimitiveComponent>(Actor->GetRootComponent());
 		if (Component != nullptr)
 		{
+			UE_LOG(LogTemp, Display, TEXT("Component"));
 			Component->SetSimulatePhysics(false);
 		}
 		Actor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
@@ -59,9 +60,7 @@ AActor* UTriggerComponent::GetAcceptableActor() const
 	//TArray의 모든 액터를 순회하는 코드
 	for (AActor* Actor : Actors)
 	{
-		//불리언 논리연산자
-		// ture && false = false
-		//true || false == true
+		
 		bool HasAcceptableTag = Actor->ActorHasTag(AcceptableActorTag);
 		bool IsGrabbed = Actor->ActorHasTag("Grabbed");
 		if (HasAcceptableTag && !IsGrabbed)

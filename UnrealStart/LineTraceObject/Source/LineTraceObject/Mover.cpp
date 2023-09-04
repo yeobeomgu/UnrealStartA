@@ -30,20 +30,20 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	//원점을 디폴트 값으로 설정.
+	FVector TargetLocation = OriginalLocation;
+
 	if (ShouldMove)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Move"));
-		FVector CurrentLocation = GetOwner()->GetActorLocation();
-		FVector TargetLocation = OriginalLocation + MoveOffset;
-		float Speed = FVector::Distance(OriginalLocation, TargetLocation) /  MoveTime;
-	 
-		FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, Speed);
-		GetOwner()->SetActorLocation(NewLocation);
-
+		UE_LOG(LogTemp, Display, TEXT("Mover 2"));
+		TargetLocation = OriginalLocation + MoveOffset;
 	}
-	//FVector OwnerLocation = Owner -> GetActorLocation();
-	// FVector을 문자열로 바꿔준다.
-	//FString OwnerLocationString = OwnerLocation.ToCompactString();
+	FVector CurrentLocation = GetOwner()->GetActorLocation();
+	float Spqed = MoveOffset.Length() / MoveTime;
+
+	FVector NewLocation = FMath::VInterpConstantTo(CurrentLocation, TargetLocation, DeltaTime, Speed);
+	GetOwner()->SetActorLocation(NewLocation);
+
 }
 
 void UMover::SetShouldMove(bool NewShouldMove)

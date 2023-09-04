@@ -52,8 +52,14 @@ void UGrabber::Grab()
 	if (HasHit)
 	{
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+		
+		HitComponent->SetSimulatePhysics(true);
 		HitComponent->WakeAllRigidBodies();
-		HitResult.GetActor()->Tags.Add("Grabbed");
+		AActor* HitActor = HitResult.GetActor();
+		HitActor->Tags.Add("Grabbed");
+		
+		//Trigger에 겹침으로 움직임이 봉쇄된걸 풀어줌
+		HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		PhysicsHandle->GrabComponentAtLocationWithRotation(
 			HitComponent,
 			NAME_None,
